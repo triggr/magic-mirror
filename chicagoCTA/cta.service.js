@@ -14,10 +14,10 @@ angular.module('mirror')
         }).then(function successCallback(response) {
           for (var member in CTA.arrivals) delete CTA.arrivals[member];
           for (let arrival of response.data) {
-            if (!CTA.arrivals[arrival.stopDescription]) {
-              CTA.arrivals[arrival.stopDescription] = []
-         }
-            CTA.arrivals[arrival.stopDescription].push(arrival);
+            if (!CTA.arrivals[arrival.route + arrival.terminalDestinationName]) {
+              CTA.arrivals[arrival.route + arrival.terminalDestinationName] = []
+            }
+            CTA.arrivals[arrival.route + arrival.terminalDestinationName].push(arrival);
           }
           $log.debug("Refreshed CTA arrivals", CTA.arrivals);
         });
