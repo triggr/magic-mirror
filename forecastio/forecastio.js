@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('mirror')
-    .factory('Weather', function ($q, $resource, $http, FORECASTIO_KEY) {
-        var url = 'https://api.darksky.net/forecast/' + FORECASTIO_KEY + '/';
+    .factory('Weather', function ($q, $resource, $http, DARKSKY_KEY) {
+        var url = 'https://api.forecast.io/forecast/' + DARKSKY_KEY + '/';
 
         var weatherResource = $resource(url, {
           callback: 'JSON_CALLBACK'
