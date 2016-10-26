@@ -115,7 +115,7 @@ The current supported directives:
 
 * Register for a [Dark Sky Forecast API account](https://developer.forecast.io/register)
  
-* Copy the API key at the bottom to the `FORECASTIO_KEY` value in the config
+* Copy the API key at the bottom to the `DARKSKY_KEY` value in the config
   file.
 
 ### Google Calendar
