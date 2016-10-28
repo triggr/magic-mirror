@@ -15,7 +15,7 @@ module.exports = {
   LONGITUDE: -87.000,
   CTA_TRAIN_API_KEY: '',
   CTA_TRAIN_MAP_ID: '41320',
-  FORECASTIO_KEY: '',
+  DARKSKY_KEY: '',
   GOOGLE_CALENDAR_CLIENT_SECRET: {},
   QUOTES: [
     "Look at that sexy dude!",

@@ -3,7 +3,7 @@ module.exports = {
     "use strict";
     if (!conf.LATITUDE ||
         !conf.LONGITUDE ||
-        !conf.FORECASTIO_KEY) {
+        !conf.DARKSKY_KEY) {
       console.log("Missing Forecast.io config keys, skipping");
       return false;
     }
@@ -14,7 +14,7 @@ module.exports = {
     return [
       "LATITUDE",
       "LONGITUDE",
-      "FORECASTIO_KEY"
+      "DARKSKY_KEY"
     ];
   },
   scripts: ["forecastio/forecastio.js"],
