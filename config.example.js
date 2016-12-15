@@ -27,7 +27,8 @@ module.exports = {
     "Go kick some ass today!"
   ],
   TRIGGR_API_URL: 'http://localhost:1337/api/v1',
-  TRIGGR_API_KEY: '',
+  TRIGGR_USERNAME: '',
+  TRIGGR_PASSWORD: '',
   LAYOUT: {
     topLeft: [
       "clock-simple",
