@@ -1,39 +1,33 @@
 'use strict';
 
 var request = require('request');
+request = request.defaults({jar: true});
 
 let config = {};
 let reasons = [];
 
+const login = function(callback) {
+  let options = {
+    url: config.TRIGGR_API_URL + '/superUser/login',
+    body: {email: config.TRIGGR_USERNAME, password: config.TRIGGR_PASSWORD},
+    json: true,
+    method: 'POST'
+  }
+  request(options, (error, response, body) => {
+    console.log("LOGIN", error, response, body);
+    callback();
+  })
+}
+
 const updateReasonSober = function() {
   console.log('Updating reason sober');
-  // var options = {
-  //   url: config.TRIGGR_API_URL + '/reasonSober?status=approved',
-  //   headers: {
-  //     'X-Triggr-Internal': config.TRIGGR_API_KEY
-  //   }
-  // };
-  // TODO: revert when https://github.com/triggr/triggr_api/pull/454 merges
-  var options = {
-    url: config.TRIGGR_API_URL + '/reasonSober',
-    headers: {
-      'X-Triggr-Internal': config.TRIGGR_API_KEY
-    }
+  let options = {
+    url: config.TRIGGR_API_URL + '/reasonSober?status=approved',
   };
 
   function callback(error, response, body) {
-    console.log('reason sober CB', error, body);
     if (!error && response.statusCode == 200) {
-      reasons = [];
-
-      // TODO: remove when https://github.com/triggr/triggr_api/pull/454 merges
-      let allReasons = JSON.parse(body);
-      allReasons.forEach((reason) => {
-        if (reason.status && reason.status == 'approved') {
-          reasons.push(reason);
-        }
-      });
-
+      reasons = JSON.parse(body);
       console.log('Updated reason sober, found', reasons.length, 'reasons.');
     }
   }
@@ -54,9 +48,10 @@ module.exports = {
       console.log('TRIGGR_API_KEY config key missing, skipping reasonSober module');
       return false;
     }
-
-    setInterval(updateReasonSober, 5 * 60 * 1000);
-    updateReasonSober();
+    login(() => {
+      setInterval(updateReasonSober, 5 * 60 * 1000);
+      updateReasonSober();
+    });
   },
   routes: function(app) {
     'use strict';
