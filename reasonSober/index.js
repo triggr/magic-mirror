@@ -6,34 +6,32 @@ request = request.defaults({jar: true});
 let config = {};
 let reasons = [];
 
-const login = function(callback) {
+const updateReasonSober = function(callback) {
   let options = {
     url: config.TRIGGR_API_URL + '/superUser/login',
     body: {email: config.TRIGGR_USERNAME, password: config.TRIGGR_PASSWORD},
     json: true,
-    method: 'POST'
+    method: 'POST',
   }
   request(options, (error, response, body) => {
-    console.log("LOGIN", error, response, body);
-    callback();
+    let reasonSoberOptions = {
+      url: config.TRIGGR_API_URL + '/reasonSober?status=approved',
+    };
+
+    console.log('Updating reason sober', reasonSoberOptions);
+
+    request(reasonSoberOptions, (error, response, body) => {
+      if (error) {
+        console.log("Updating reason sober API error: ", error);
+        return;
+      }
+      if (response.statusCode === 200) {
+        reasons = JSON.parse(body);
+        console.log('Updated reason sober, found', reasons.length, 'reasons.');
+      }
+    });
   })
 }
-
-const updateReasonSober = function() {
-  console.log('Updating reason sober');
-  let options = {
-    url: config.TRIGGR_API_URL + '/reasonSober?status=approved',
-  };
-
-  function callback(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      reasons = JSON.parse(body);
-      console.log('Updated reason sober, found', reasons.length, 'reasons.');
-    }
-  }
-
-  request(options, callback);
-};
 
 module.exports = {
   init: function(conf) {
@@ -44,14 +42,13 @@ module.exports = {
       console.log('TRIGGR_API_URL config key missing, skipping reasonSober module');
       return false;
     }
-    if (!config.TRIGGR_API_KEY) {
-      console.log('TRIGGR_API_KEY config key missing, skipping reasonSober module');
+    if (!config.TRIGGR_USERNAME || !config.TRIGGR_PASSWORD) {
+      console.log('TRIGGR_USERNAME or TRIGGR_PASSWORD config key missing, skipping ' +
+        'reasonSober module');
       return false;
     }
-    login(() => {
-      setInterval(updateReasonSober, 5 * 60 * 1000);
-      updateReasonSober();
-    });
+    setInterval(updateReasonSober, 5 * 60 * 1000);
+    updateReasonSober();
   },
   routes: function(app) {
     'use strict';
