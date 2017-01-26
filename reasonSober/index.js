@@ -25,7 +25,7 @@ const updateReasonSober = function(callback) {
         console.log("Updating reason sober API error: ", error);
         return;
       }
-      if (!error && response.statusCode == 200) {
+      if (response.statusCode === 200) {
         reasons = JSON.parse(body);
         console.log('Updated reason sober, found', reasons.length, 'reasons.');
       }
