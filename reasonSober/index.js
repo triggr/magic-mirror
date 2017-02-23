@@ -15,7 +15,7 @@ const updateReasonSober = function(callback) {
   }
   request(options, (error, response, body) => {
     let reasonSoberOptions = {
-      url: config.TRIGGR_API_URL + '/reasonSober?status=approved',
+      url: config.TRIGGR_API_URL + '/superUser/reasonSober',
     };
 
     console.log('Updating reason sober', reasonSoberOptions);
